@@ -1,0 +1,53 @@
+
+<div class="animated fadeIn">
+
+  <app-navbar></app-navbar>
+
+</div>
+<div class="row animated fadeIn fast" >
+  <form (ngSubmit)="enviarMensaje( mensaje.value )">
+        
+      <div style="float: left; margin-right: 20px; margin-left: 50px;">
+
+        <h4>Mensajes sin leer </h4>
+        <div *ngFor="let mensaje of objectKeys(mensajes)" >
+          <div *ngIf=!mensajes[mensaje].leido >
+            <app-mensajes (quitarMensaje)="quitarMensaje( $event )"  [mensaje]='mensajes[mensaje]'></app-mensajes>
+          </div>
+        </div>
+      
+
+      </div>
+
+      <div style="float: left; margin-right: 20px; margin-left: 50px;">
+
+        <h4>Amigos</h4>
+
+        <div *ngFor="let usuario of usuarios" class="form-check">
+          <input type="checkbox" class="form-check-input" name="usuario.index" [(ngModel)]="usuario.seleccionado" >
+          <label class="form-check-label" for="usuario.index"> {{ usuario.nombre }} </label>
+
+          <span *ngIf="usuario.estado" style="margin-left: 20px;" class="badge badge-pill badge-success">Conectado</span>
+          <span *ngIf="!usuario.estado" style="margin-left: 20px;" class="badge badge-pill badge-success">Desconectado</span>
+
+        </div>
+
+        <div class="form-group row">
+          <p></p>
+          <input type="checkbox" class="form-check-input" #checkbok (click)="changeStatusCheckbok( checkbok.checked )" >
+          <label class="form-check-label"> Seleccionar todos </label>
+        </div>
+
+      </div>
+
+      <div class="form-group row">
+        <h6 >Escriba su mensaje</h6>
+  
+        <textarea class="form-control" rows="3" #mensaje></textarea>
+        <input class="btn btn-primary" type="submit" value="Enviar">
+        
+      </div>
+
+    </form>
+
+</div>

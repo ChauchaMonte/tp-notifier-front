@@ -1,0 +1,6 @@
+
+<p></p>
+<h6>De: {{ mensaje.remitente }}</h6>
+<h6>Fecha: {{ mensaje.enviado | date: 'short' }}</h6>
+<h6>{{ mensaje.mensaje }}</h6>
+<a *ngIf='!mensaje.leido'  (click)="mensajeLeido()" class="badge badge-pill badge-warning">Marcar como leido</a>
