@@ -5,6 +5,14 @@
 </div>
 
 
-<p>
-  mensajes-leidos works!
-</p>
+<div style="float: left; margin-right: 20px; margin-left: 50px;">
+
+  <h4>Mensajes leidos </h4>
+  <div *ngFor="let mensaje of objectKeys(mensajes)" >
+    <div *ngIf=mensajes[mensaje].leido >
+      <app-mensajes [mensaje]='mensajes[mensaje]'></app-mensajes>
+    </div>
+  </div>
+
+
+</div>

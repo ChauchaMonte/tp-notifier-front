@@ -21,6 +21,7 @@ import { CerrarSesionComponent } from './components/cerrar-sesion/cerrar-sesion.
 import { MensajesLeidosComponent } from './components/mensajes-leidos/mensajes-leidos.component';
 import { MensajesComponent } from './components/mensajes/mensajes.component';
 import { NuevoUsuarioComponent } from './components/nuevo-usuario/nuevo-usuario.component';
+import { AlertsComponent } from './components/shared/alerts/alerts.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { NuevoUsuarioComponent } from './components/nuevo-usuario/nuevo-usuario.
     CerrarSesionComponent,
     MensajesLeidosComponent,
     MensajesComponent,
-    NuevoUsuarioComponent
+    NuevoUsuarioComponent,
+    AlertsComponent
   ],
   imports: [
     FormsModule,

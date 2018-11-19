@@ -11,13 +11,15 @@ export class PrincipalPageComponent implements OnInit {
   usuarios: any[] = [];
   mensajes = [];
   objectKeys = Object.keys;
+  viewAlert = false;
+  mensajeAlert: string;
 
 
   constructor( private _notifierServices: NotifierService,
                private _router: Router,
                ) {
 
-    this.setUsuario( this._notifierServices.getUsers() );
+    this.setUsuario();
   }
 
   ngOnInit() {
@@ -31,33 +33,45 @@ export class PrincipalPageComponent implements OnInit {
               'leido': data.mensajesRecibidos[index].leido,
               'mensaje': data.mensajesRecibidos[index].mensaje,
               'remitente': data.mensajesRecibidos[index].remitente,
-              'idMensaje': index
+              'idMensaje': data.mensajesRecibidos[index].id
             });
-
           }
 
           console.log('----mensajes-----');
           console.log( this.mensajes );
           console.log('---------');
 
-        }, ( errorServices ) => {
-
-          this._router.navigate(['/home']);
+        }, ( errorServicio ) => {
+          
+          this.mensajeAlert = errorServicio.error.message;
+          this.viewAlert = true;
+          
+          setTimeout ( () => { this.viewAlert = false; } , 1000 );
 
         });
   }
 
-  setUsuario( p_users: any[] ) {
+  setUsuario() {
 
-    for (let index = 0; index < p_users.length; index++) {
+    this._notifierServices.getUsers()
+      .subscribe( ( data: any ) => {
 
-      this.usuarios.push( { 'index': index,
-                         'nombre': p_users[index],
-                         'seleccionado': false,
-                         'estado': true
-                        });
+        for (let index = 0; index < data.usuarios.length; index++) {
 
-    }
+          this.usuarios.push( { 'index': data.usuarios[index]._id,
+                             'nombre': data.usuarios[index].username,
+                             'seleccionado': false,
+                             'estado': data.usuarios[index].status,
+                             'email': data.usuarios[index].email
+                            });
+        }
+
+      }, ( errorServices ) => {
+
+        console.log( errorServices );
+        
+      });
+
     console.log('------users---------');
     console.log(this.usuarios);
     console.log('---------------');
@@ -72,13 +86,21 @@ export class PrincipalPageComponent implements OnInit {
 
         this.limpiarAlEnviarUnMensaje();
 
-
-
       }, ( errorServicio ) => {
 
-        console.log( errorServicio );
+        this.mensajeAlert = errorServicio.error.message;
+        this.viewAlert = true;
+        
+        setTimeout ( () => { this.viewAlert = false; } , 1000 );
 
       });
+
+    } else {
+
+      this.mensajeAlert = ' Debe seleccionar al menos un destinatario ';
+      this.viewAlert = true;
+      
+      setTimeout ( () => { this.viewAlert = false; } , 1000 );
 
     }
   }

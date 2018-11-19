@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-  date = '2018-11-06T20:22:20.071Z';
-
+  mensaje: string;
+  viewAlert = false;
   constructor( private _notifierServices: NotifierService,
                private _router: Router
     ) {}
@@ -21,13 +21,24 @@ export class LoginComponent {
       .subscribe( ( data: any ) => {
 
         this._notifierServices.updateToken( data.token );
-        this._notifierServices.setUsers( data.users );
+        this._notifierServices.putStatus( true )
+          .subscribe( ( dataStatus: any ) => { 
+            
+            console.log( dataStatus );
 
-        this._router.navigate(['/principalPage']);
+            this._router.navigate(['/principalPage']);
+          }, ( errorStatus ) => {
+            
+            console.log( errorStatus );
+
+          });
 
       }, ( errorServicio ) => {
-
-        console.log(errorServicio);
+    
+        this.mensaje = errorServicio.error.message;
+        this.viewAlert = true;
+        
+        setTimeout ( () => { this.viewAlert = false; } , 1000 );
 
       });
   }

@@ -8,13 +8,26 @@ import { Router } from '@angular/router';
 })
 export class CerrarSesionComponent implements OnInit {
 
-  constructor( private _notifierService: NotifierService,
+  constructor( private _notifierServices: NotifierService,
                private _router: Router
   ) { }
 
   ngOnInit() {
-    this._notifierService.logOff();
-    this._router.navigate([ '/login' ]);
+
+    this._notifierServices.putStatus( false )
+      .subscribe( ( dataStatus: any ) => { 
+        
+        console.log( dataStatus );
+        
+        this._notifierServices.updateToken(' ');
+
+        this._router.navigate([ '/login' ]);
+
+      }, ( errorStatus ) => {
+
+        console.log( errorStatus );
+
+      });
   }
 
 }

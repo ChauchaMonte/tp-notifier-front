@@ -24,7 +24,10 @@
 
   <div class="form-group row">
       <a [routerLink]="['/nuevoUsuario']" class="badge badge-secondary">Nuevo usuario</a>
+  </div>
 
+  <div *ngIf="viewAlert">
+    <app-alerts [mensaje]=mensaje ></app-alerts>
   </div>
 
 </div>

@@ -70,13 +70,13 @@ export class NotifierService {
   // OK
   putMessages(idxMensaje: string, estado: boolean) {
 
-    // const msj = { "idxMensaje": "1" , "leido": "true" }
-    const msj = ` { "idxMensaje": " ${ idxMensaje } " , "leido": "${ estado } " } `;
+    const msj = ` { "leido": ${ estado } } `;
     const headers = this.getHeader();
 
-    return this.http.put(`${ this.url }messages/`, msj , { headers });
+    return this.http.put(`${ this.url }messages/${ idxMensaje }`, msj , { headers });
   }
-
+  
+  // OK
   postUsers(nombre: string, password: string, email: string) {
 
     // const msj = ' { "username": "pepito2", "password": "123456", "email": "pepito@pepe.com" } ';
@@ -84,6 +84,25 @@ export class NotifierService {
     const headers = this.getHeader();
 
     return this.http.post(`${ this.url }users/`, msj , { headers });
+  }
+  
+  // OK
+  getUsers() {
+
+    const headers = this.getHeader();
+
+    console.log( `${ this.url }users/`, { headers } );
+    
+    return this.http.get(`${ this.url }users/`, { headers });
+  }
+
+  // OK
+  putStatus( estado: boolean ) {
+
+    const msj = ` { "estado": ${ estado } } `;
+    const headers = this.getHeader();
+
+    return this.http.put(`${ this.url }status/`, msj , { headers });
   }
 
   // OK
@@ -100,18 +119,5 @@ export class NotifierService {
     console.log('Actualizo el token');
     this.storage.set(STORAGE_TOKEN, token);
     this.headers = null;
-  }
-
-  setUsers( usuario ) {
-    this.users = usuario;
-  }
-
-  getUsers() {
-    return this.users;
-  }
-
-  logOff() {
-    this.updateToken(' ');
-    this.setUsers( [] );
   }
 }
