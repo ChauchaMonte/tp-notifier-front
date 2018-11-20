@@ -10,19 +10,28 @@ export class PrincipalPageComponent implements OnInit {
 
   usuarios: any[] = [];
   mensajes = [];
+  cadena: string = '';
   objectKeys = Object.keys;
+
+  mensajeAlerta: string;
   viewAlert = false;
-  mensajeAlert: string;
 
 
   constructor( private _notifierServices: NotifierService,
                private _router: Router,
                ) {
 
-    this.setUsuario();
   }
 
   ngOnInit() {
+
+    this.getUsuario();
+    this.getMensajes();
+    
+  }
+
+  getMensajes() {
+
     this._notifierServices.getMessages()
         .subscribe( (data: any) => {
 
@@ -43,15 +52,16 @@ export class PrincipalPageComponent implements OnInit {
 
         }, ( errorServicio ) => {
           
-          this.mensajeAlert = errorServicio.error.message;
+          this.mensajeAlerta = errorServicio.error.message;
           this.viewAlert = true;
           
           setTimeout ( () => { this.viewAlert = false; } , 1000 );
 
         });
+
   }
 
-  setUsuario() {
+  getUsuario() {
 
     this._notifierServices.getUsers()
       .subscribe( ( data: any ) => {
@@ -66,9 +76,14 @@ export class PrincipalPageComponent implements OnInit {
                             });
         }
 
-      }, ( errorServices ) => {
+      }, ( errorServicio ) => {
 
-        console.log( errorServices );
+        this.mensajeAlerta = errorServicio.error.message;
+        this.viewAlert = true;
+        
+        setTimeout ( () => { this.viewAlert = false; } , 1000 );
+
+        console.log( errorServicio );
         
       });
 
@@ -77,27 +92,44 @@ export class PrincipalPageComponent implements OnInit {
     console.log('---------------');
   }
 
-  enviarMensaje(cadena: string) {
+  enviarMensaje() {
 
-    if ( this.seleccionoDestinatario() && cadena !== '' ) {
+    if ( this.seleccionoDestinatario() ) {
 
-      this._notifierServices.postMessages( cadena, this.getDestinatarios() )
-      .subscribe( ( data ) => {
+      if ( this.cadena !== '' ) {
 
-        this.limpiarAlEnviarUnMensaje();
+        this._notifierServices.postMessages( this.cadena, this.getDestinatarios() )
+        .subscribe( ( data ) => {
+  
+          this.limpiarAlEnviarUnMensaje();
 
-      }, ( errorServicio ) => {
+          this.mensajeAlerta = ' Mensaje enviado con exito ';
+          this.viewAlert = true;
+          
+          setTimeout ( () => { this.viewAlert = false; } , 1300 );
 
-        this.mensajeAlert = errorServicio.error.message;
+  
+        }, ( errorServicio ) => {
+  
+          this.mensajeAlerta = errorServicio.error.message;
+          this.viewAlert = true;
+          
+          setTimeout ( () => { this.viewAlert = false; } , 1000 );
+  
+        });
+
+      } else {
+
+        this.mensajeAlerta = ' No se puede enviar mensajes sin contenido ';
         this.viewAlert = true;
         
         setTimeout ( () => { this.viewAlert = false; } , 1000 );
 
-      });
+      }
 
     } else {
 
-      this.mensajeAlert = ' Debe seleccionar al menos un destinatario ';
+      this.mensajeAlerta = ' Debe seleccionar al menos un destinatario ';
       this.viewAlert = true;
       
       setTimeout ( () => { this.viewAlert = false; } , 1000 );
@@ -132,6 +164,8 @@ export class PrincipalPageComponent implements OnInit {
       this.usuarios[index].seleccionado = false;
     }
 
+    this.cadena = '';
+
   }
 
   quitarMensaje( p_idMensaje ) {
@@ -139,8 +173,14 @@ export class PrincipalPageComponent implements OnInit {
     for (let index = 0; index < this.mensajes.length; index++) {
 
       if (this.mensajes[index].idMensaje === p_idMensaje) {
+        
+        this.mensajes[index].leido = true;
 
-        this.mensajes.splice(this.mensajes[index], 1);
+        this.mensajeAlerta = ' Mensaje marcado como leido ';
+        this.viewAlert = true;
+        
+        setTimeout ( () => { this.viewAlert = false; } , 1500 );
+        
 
       }
 

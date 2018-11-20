@@ -91,5 +91,10 @@
       <a [routerLink]="['/login']" class="badge badge-secondary">volver</a>
     </div>
   </div>
+
+
+  <div *ngIf="viewAlert">
+    <app-alerts [mensaje]=mensajeAlerta ></app-alerts>
+  </div>
   
 </div>

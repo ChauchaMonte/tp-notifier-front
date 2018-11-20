@@ -4,8 +4,15 @@
   <app-navbar></app-navbar>
 
 </div>
+
+<div>
+  <div *ngIf="viewAlert">
+    <app-alerts [mensaje]=mensajeAlerta ></app-alerts>
+  </div>
+</div>
+
 <div class="row animated fadeIn fast" >
-  <form (ngSubmit)="enviarMensaje( mensaje.value )">
+  <form (ngSubmit)="enviarMensaje()">
         
       <div style="float: left; margin-right: 20px; margin-left: 50px;">
 
@@ -15,7 +22,6 @@
             <app-mensajes (quitarMensaje)="quitarMensaje( $event )"  [mensaje]='mensajes[mensaje]'></app-mensajes>
           </div>
         </div>
-      
 
       </div>
 
@@ -43,7 +49,7 @@
       <div class="form-group row">
         <h6 >Escriba su mensaje</h6>
   
-        <textarea class="form-control" rows="3" #mensaje></textarea>
+        <textarea class="form-control" rows="3" name="cadena" [(ngModel)]="cadena" ></textarea>
         <input class="btn btn-primary" type="submit" value="Enviar">
         
       </div>

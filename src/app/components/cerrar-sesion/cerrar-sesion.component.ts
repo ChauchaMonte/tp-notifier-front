@@ -26,6 +26,8 @@ export class CerrarSesionComponent implements OnInit {
       }, ( errorStatus ) => {
 
         console.log( errorStatus );
+        this._notifierServices.updateToken(' ');
+        this._router.navigate([ '/login' ]);
 
       });
   }

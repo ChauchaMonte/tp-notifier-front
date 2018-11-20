@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-  mensaje: string;
+  mensajeAlerta: string;
   viewAlert = false;
   constructor( private _notifierServices: NotifierService,
                private _router: Router
@@ -27,15 +27,20 @@ export class LoginComponent {
             console.log( dataStatus );
 
             this._router.navigate(['/principalPage']);
-          }, ( errorStatus ) => {
+          }, ( errorServicio ) => {
             
-            console.log( errorStatus );
+            console.log( errorServicio );
+            this.mensajeAlerta = errorServicio.error.message;
+            this.viewAlert = true;
+            
+            setTimeout ( () => { this.viewAlert = false; } , 1000 );
+    
 
           });
 
       }, ( errorServicio ) => {
     
-        this.mensaje = errorServicio.error.message;
+        this.mensajeAlerta = errorServicio.error.message;
         this.viewAlert = true;
         
         setTimeout ( () => { this.viewAlert = false; } , 1000 );

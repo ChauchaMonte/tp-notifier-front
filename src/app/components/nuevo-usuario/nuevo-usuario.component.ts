@@ -17,6 +17,9 @@ export class NuevoUsuarioComponent implements OnInit {
   nombre: string = '';
   password: string = '';
   email: string = '';
+  
+  mensajeAlerta: string;
+  viewAlert = false;
 
   constructor( private _notifierService: NotifierService,
                private _router: Router
@@ -31,9 +34,14 @@ export class NuevoUsuarioComponent implements OnInit {
       .subscribe( ( data ) => {
         this._router.navigate(['/login']);
 
-      }, ( errorServices ) => {
+      }, ( errorServicio ) => {
+
+        this.mensajeAlerta = errorServicio.error.message;
+        this.viewAlert = true;
+        
+        setTimeout ( () => { this.viewAlert = false; } , 1000 );
           
-        console.log( errorServices );
+        console.log( errorServicio );
           
       } );
   

@@ -11,7 +11,9 @@ export class MensajesComponent implements OnInit {
   @Input() mensaje: any;
   @Output() quitarMensaje: EventEmitter<string>;
 
-
+  mensajeAlerta: string;
+  viewAlert = false;
+  
   constructor( private _notifierServices: NotifierService ) {
 
     this.quitarMensaje = new EventEmitter;
@@ -30,8 +32,13 @@ export class MensajesComponent implements OnInit {
       this.quitarMensaje.emit( this.mensaje.idMensaje );
 
 
-    },  ( errorServices ) => {
-      console.log( errorServices );
+    },  ( errorServicio ) => {
+      console.log( errorServicio );
+
+      this.mensajeAlerta = errorServicio.error.message;
+      this.viewAlert = true;
+      
+      setTimeout ( () => { this.viewAlert = false; } , 1000 );
 
     });
 
