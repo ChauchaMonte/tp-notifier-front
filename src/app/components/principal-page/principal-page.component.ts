@@ -107,7 +107,9 @@ export class PrincipalPageComponent implements OnInit {
           this.viewAlert = true;
           
           setTimeout ( () => { this.viewAlert = false; } , 1300 );
-
+    
+          console.log( data );
+          
   
         }, ( errorServicio ) => {
   
